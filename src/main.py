@@ -4,7 +4,7 @@ import os
 import shutil
 
 def main():
-    print("Hello")
+    generate_page("C:\\dev\\boot-dev-projects\\static-site-generator\\content\\index.md", "C:\\dev\\boot-dev-projects\\static-site-generator\\template.html", "C:\\dev\\boot-dev-projects\\static-site-generator\\public\\")
 
 def copy_to_path(from_path, to_path):
     if not os.path.exists(from_path):
@@ -45,6 +45,11 @@ def generate_page(from_path, template_path, to_path):
     
     if not os.path.exists(to_path):
         os.makedirs(to_path)
+    file_name = os.path.join(to_path, "index.html")
+    dest_file = open(file_name, "w")
+    dest_file.write(template)
+    dest_file.close()
+    
     
     
     
@@ -56,6 +61,6 @@ def extract_title(markdown: str):
     title = filtered_md.split("\n", 1)[0].lstrip("# ")
     return title
 
-generate_page("C:\\dev\\boot-dev-projects\\static-site-generator\\content\\index.md", "asd", "asd")
+
 
 main()
