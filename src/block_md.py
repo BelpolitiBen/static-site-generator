@@ -77,7 +77,6 @@ def block_to_html_code(block):
     filtered_block = block.strip("```").strip()
     leaf_nodes = block_to_html_leafs(filtered_block, False)
     code_tag = ParentNode("code", leaf_nodes)
-    print(code_tag.to_html())
     return ParentNode("pre", [code_tag])
     
 def block_to_html_ordered_list(block):

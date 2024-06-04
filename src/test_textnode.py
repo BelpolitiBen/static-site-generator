@@ -1,7 +1,6 @@
 import unittest
 
 from textnode import TextNode
-from htmlnode import text_node_to_html_node
 from inline_md import split_nodes_delimiter
 
 class TestTextNode(unittest.TestCase):

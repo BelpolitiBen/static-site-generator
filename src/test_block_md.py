@@ -1,5 +1,4 @@
 import unittest
-from textnode import TextNode
 from block_md import (markdown_to_blocks, BlockTypes, markdown_to_html_node, block_to_block_type)
 
 

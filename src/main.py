@@ -4,7 +4,16 @@ import os
 import shutil
 
 def main():
-    generate_page("C:\\dev\\boot-dev-projects\\static-site-generator\\content\\index.md", "C:\\dev\\boot-dev-projects\\static-site-generator\\template.html", "C:\\dev\\boot-dev-projects\\static-site-generator\\public\\")
+    cwd = os.getcwd()
+    content_path = os.path.join(cwd, "content")
+    template_path = os.path.join(cwd, "template.html")
+    public_path = os.path.join(cwd, "public")
+    static_path = os.path.join(cwd, "static")
+    
+    
+    copy_to_path(static_path, public_path)
+    generate_pages_recursive(content_path, template_path, public_path)
+    # generate_page(content_path, template_path, f"{public_path}/index.html")
 
 def copy_to_path(from_path, to_path):
     if not os.path.exists(from_path):
@@ -24,9 +33,22 @@ def copy_to_path(from_path, to_path):
         else:
             subpath = os.path.join(to_path, path)
             copy_to_path(curr_path, subpath)
-            
-def generate_page(from_path, template_path, to_path):
+
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    content_files = os.listdir(dir_path_content)
+    for file in content_files:
+        file_path = os.path.join(dir_path_content, file)
+        if os.path.isfile(file_path):
+            file_name = file.split(".")[0] + ".html"
+            dest_file_path = os.path.join(dest_dir_path, file_name)
+            generate_page(file_path, template_path, dest_file_path)
+        else:
+            subpath = os.path.join(dest_dir_path, file)
+            generate_pages_recursive(file_path, template_path, subpath)
     
+
+def generate_page(from_path, template_path, to_path):
     print(f"Generating page from {from_path} to {to_path} using {template_path}")
     
     md_file = open(from_path)
@@ -43,15 +65,12 @@ def generate_page(from_path, template_path, to_path):
     template = template.replace("{{ Title }}", title)
     template = template.replace("{{ Content }}", content)
     
-    if not os.path.exists(to_path):
-        os.makedirs(to_path)
-    file_name = os.path.join(to_path, "index.html")
-    dest_file = open(file_name, "w")
+    dir_to_path = os.path.dirname(to_path)
+    if not os.path.exists(dir_to_path):
+        os.makedirs(dir_to_path)
+    dest_file = open(to_path, "w")
     dest_file.write(template)
-    dest_file.close()
-    
-    
-    
+    dest_file.close() 
     
 
 def extract_title(markdown: str):
